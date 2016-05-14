@@ -1,0 +1,61 @@
+.Filter {
+  display: flex;
+  flex-direction: row;
+  //flex-flow: space-around;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+  background: #333333;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
+.FilterTitle {
+  flex: 1;
+  color: #FFFFFF;
+  font-size: 20px;
+  text-decoration: none;
+  text-transform: none;
+  font-family: 'Open Sans', sans-serif;
+
+  @media screen and (max-width: 470px) {
+    font-size:16px;
+  }
+}
+.FilterItems {
+  flex: 1;
+  text-align: center;
+}
+.FilterItem {
+  display: inline-block;
+  color: #FFFFFF;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.FilterItem-link {
+  text-decoration: none;
+  display: block;
+  padding: 3px 5px;
+  border: none;
+  outline: none;
+  background: none;
+  color: #FFFFFF;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: lighter;
+
+  @media screen and (max-width: 470px) {
+    font-size: 11px;
+  }
+}
+.FilterItem-link.is-selected {
+  border: 1px solid #00D5A5;
+}
+
+.lnr-home, .lnr-dinner, .lnr-question-circle, .lnr-enter, .lnr-bullhorn {
+  color: #FFFFFF; 
+  font-size: 40px;
+}

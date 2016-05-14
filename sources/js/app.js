@@ -6,6 +6,7 @@ import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
 
 import { Map } from './map.js';
 import { Header } from './header.js';
+import { Filter } from './filter.js';
 import { About} from './about.js';
 import { Privacy } from './privacy.js';
 import { ContentGuidelines } from './guidelines.js';
@@ -25,6 +26,7 @@ var App = React.createClass({
             <Header title='StreetlivesNYC'
                          url='http://beta.streetlives.nyc'
                          location={this.props.location}/>
+
             {this.props.children}
         </div>
     )

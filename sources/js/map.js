@@ -4,6 +4,7 @@ import { Offerings, Locations } from './models.js';
 import { LocationInformation } from './locationInformation.js';
 import { LocationForm } from './locationForm.js';
 import { Search } from './search.js';
+import { Filter } from './filter.js';
 
 import '../scss/map.scss';
 import '../scss/dialog.scss';
@@ -68,6 +69,7 @@ module.exports.Map = React.createClass({
             offerings: offerings,
             locationForm: false,
             thanksDialog: false,
+            filteredId: '4',
             viz: {
                 templateURL: '//<%- username %>.cartodb.com/api/v2/viz/<%-id %>/viz.json'
             },
@@ -99,6 +101,7 @@ module.exports.Map = React.createClass({
         var options = this.state.mapOptions;
 
         cartodb.createVis('map', url, options).done(this.onVisLoaded);
+
     },
 
     isMobile() {
@@ -120,16 +123,24 @@ module.exports.Map = React.createClass({
     onVisLoaded(vis, layers) {
         var layer = layers[1];
         layer.setInteraction(true);
+        var filterString = "('" + this.state.filteredId +"') ";
         var query = "SELECT l.*, string_agg(o.name, ', ') as offerings " +
             "FROM locations AS l " +
             "LEFT OUTER JOIN locations_offerings AS lo ON lo.location_id = l.cartodb_id " +
+            "AND lo.offering_id IN " + filterString +
             "LEFT OUTER JOIN offerings as o ON o.cartodb_id = lo.offering_id " +
             "GROUP BY l.cartodb_id";
+        console.log('query', query)
         layer.setQuery(query);
 
         layer.on('mouseover',    this.onMouseOver);
         layer.on('mouseout',     this.onMouseOut);
         layer.on('featureClick', this.onFeatureClick);
+        layer.on('filterClick', this.onFilterClick);
+
+        console.log('filter state', this.state)
+
+
 
         var sublayer = layer.getSubLayer(0);
         sublayer.setInteraction(true);
@@ -341,6 +352,21 @@ module.exports.Map = React.createClass({
             username: window.Config.username
         });
     },
+    onFilterClick(id) {
+        
+        var self = this;
+        this.setState({
+            filteredId: id
+        }, function() {
+
+                // var url = self._getVizJSONURL();
+                // var options = self.state.mapOptions;
+
+                // cartodb.createVis('map', url, options).done(self.onVisLoaded);
+                console.log('state set?', this.state)
+        })
+
+    },
 
     removeLocationForm() {
         this.setState({
@@ -402,6 +428,8 @@ module.exports.Map = React.createClass({
 
     render() {
         return (
+            <div>
+            <Filter handleFilter={this.onFilterClick} />
             <div onkeyup={this.onKeyUp}>
                 <div id="map" className="Map">
                   <Search gotoPlace={this._gotoPlace}/>
@@ -409,6 +437,7 @@ module.exports.Map = React.createClass({
                 {this.renderLocationForm()}
                 {this.renderLocationInformation()}
                 {this.renderThanksDialog()}
+            </div>
             </div>
         )
     }
