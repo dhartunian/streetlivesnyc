@@ -140,9 +140,12 @@ module.exports.Map = React.createClass({
 
         console.log('filter state', this.state)
 
-
+        if(this.state.filteredId) {
+            layer.setQuery(query);
+        }
 
         var sublayer = layer.getSubLayer(0);
+        console.log('sublayer', sublayer);
         sublayer.setInteraction(true);
         sublayer.setInteractivity('cartodb_id, name, description, offerings, address');
 
@@ -167,6 +170,17 @@ module.exports.Map = React.createClass({
         });
 
         this.map = vis.getNativeMap();
+
+        // if (this.state.filteredId) {
+        //     cartodb.createLayer(this.map, {
+        //         type: 'cartodb',
+        //         user_name: 'streetlivesnyc',
+        //         sublayers: [{
+        //             sql: query,
+        //             cartocss: locationCSS
+        //         }]
+        //     })
+        // }
 
         this.map.on('click', this.onClickMap);
     },

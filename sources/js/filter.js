@@ -51,11 +51,11 @@ module.exports.Filter = React.createClass({
           )
       })
         return (
-            <header className="Filter">
+            <footer className="Filter">
                 <ul className="FilterItems">
                   {filterItems}
                 </ul>
-            </header>
+            </footer>
         )
     }
 });
